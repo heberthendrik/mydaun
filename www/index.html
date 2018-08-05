@@ -69,7 +69,7 @@
 			height:     100%;
 			width:      100%;
 			background: rgba( 255, 255, 255, .8 )
-			url('http://i.stack.imgur.com/FhHRx.gif')
+			url('MEDIA/loading.gif')
 			50% 50%
 			no-repeat;
 			}
@@ -101,94 +101,42 @@
 					</div>
 					<div class="panel-body" style="border-top-color:#7fc12c;">
 						
-							<div class="form-group mb-lg">
-								<label>Username</label>
-								<div class="input-group input-group-icon">
-									<input name="username" type="text" class="form-control input-lg" id="input_username" />
-									<span class="input-group-addon">
-										<span class="icon icon-lg">
-											<i class="fa fa-user"></i>
-										</span>
+						<div class="form-group mb-lg">
+							<label>Username</label>
+							<div class="input-group input-group-icon">
+								<input name="username" type="text" class="form-control input-lg" id="input_username" />
+								<span class="input-group-addon">
+									<span class="icon icon-lg">
+										<i class="fa fa-user"></i>
 									</span>
-								</div>
+								</span>
 							</div>
+						</div>
 
-							<div class="form-group mb-lg">
-								<div class="clearfix">
-									<label class="pull-left">Password</label>
-								</div>
-								<div class="input-group input-group-icon">
-									<input name="pwd" type="password" class="form-control input-lg" id="input_password" />
-									<span class="input-group-addon">
-										<span class="icon icon-lg">
-											<i class="fa fa-lock"></i>
-										</span>
+						<div class="form-group mb-lg">
+							<div class="clearfix">
+								<label class="pull-left">Password</label>
+							</div>
+							<div class="input-group input-group-icon">
+								<input name="pwd" type="password" class="form-control input-lg" id="input_password" />
+								<span class="input-group-addon">
+									<span class="icon icon-lg">
+										<i class="fa fa-lock"></i>
 									</span>
-								</div>
+								</span>
 							</div>
+						</div>
 
-							<div class="row">
-								<div class="col-sm-12 text-right">
-									<button onclick="PerformLogin()" class="btn btn-primary hidden-xs" style="width:100%;background:#7fc12c;border-color:#7fc12c;">Masuk</button>
-									<button onclick="PerformLogin()" class="btn btn-primary btn-block btn-lg visible-xs mt-lg" style="width:100%;background:#7fc12c;border-color:#7fc12c;">Masuk</button>
-								</div>
-								<div class="col-sm-12 text-right" style="margin-top:10px;">
-									<button type="submit" class="btn btn-primary hidden-xs" style="width:100%;background:#fff;color:#7fc12c;border-color:#7fc12c;text-shadow:none;">Login sebagai merchant?</button>
-									<button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg" style="width:100%;background:#fff;color:#7fc12c;border-color:#7fc12c;text-shadow:none;">Login sebagai merchant?</button>
-								</div>
+						<div class="row">
+							<div class="col-sm-12 text-right">
+								<button onclick="PerformLogin()" class="btn btn-primary hidden-xs" style="width:100%;background:#7fc12c;border-color:#7fc12c;">Masuk</button>
+								<button onclick="PerformLogin()" class="btn btn-primary btn-block btn-lg visible-xs mt-lg" style="width:100%;background:#7fc12c;border-color:#7fc12c;">Masuk</button>
 							</div>
-							
-							<script>
-								function PerformLogin(){
-									
-									username = document.getElementById("input_username").value;
-									password = document.getElementById("input_password").value;
-									
-									if( username == '' || password == '' ){
-										alert('Username dan password tidak boleh kosong');
-									} else {
-										
-										openModal();
-							        	var xhttp = new XMLHttpRequest();
-										xhttp.onreadystatechange = function() {
-											if (this.readyState == 4 && this.status == 200) {
-												
-												var jsonData = JSON.parse(this.responseText);
-												var function_result = jsonData.function_result;
-												login_time = jsonData.login_time;
-												idDaun = jsonData.idDaun;
-												login_username = jsonData.login_username;
-								
-												if( function_result == 0 ){
-													alert('Login gagal. pastikan username dan password Anda, benar.');
-													closeModal();
-												} else if( function_result == 1 ){
-													localStorage.clear();
-													localStorage.setItem("mydaun_member_login_time",login_time);
-													localStorage.setItem("mydaun_member_idDaun",idDaun);
-													localStorage.setItem("mydaun_member_login_username",login_username);
-													
-													window.location="MEMBER/dashboard.html";
-													closeModal();
-												}
-											}
-										};
-										xhttp.open("POST", "http://localhost/development_site/mydaun/daun/MOBILE_API/member/general.php?action=Login", true);
-										xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-										xhttp.send("kode_member1=EZ-00000&kode_member2="+username+"&password="+password);
-										
-									}
-									
-								}
-								
-								function openModal(){
-								  document.getElementById("modal").style.display="block";
-								}
-					
-								function closeModal(){
-								  document.getElementById("modal").style.display="none";
-								}
-							</script>
+							<div class="col-sm-12 text-right" style="margin-top:10px;">
+								<button type="submit" class="btn btn-primary hidden-xs" style="width:100%;background:#fff;color:#7fc12c;border-color:#7fc12c;text-shadow:none;">Login sebagai merchant?</button>
+								<button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg" style="width:100%;background:#fff;color:#7fc12c;border-color:#7fc12c;text-shadow:none;">Login sebagai merchant?</button>
+							</div>
+						</div>
 							
 					</div>
 				</div>
@@ -219,6 +167,58 @@
 		<div id="modal" class="modal"><!-- Place at bottom of page --></div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
+        
+        <script>
+			function PerformLogin(){
+				
+				username = document.getElementById("input_username").value;
+				password = document.getElementById("input_password").value;
+				
+				if( username == '' || password == '' ){
+					alert('Username dan password tidak boleh kosong');
+				} else {
+					
+					openModal();
+		        	var xhttp = new XMLHttpRequest();
+					xhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							
+							var jsonData = JSON.parse(this.responseText);
+							var function_result = jsonData.function_result;
+							login_time = jsonData.login_time;
+							idDaun = jsonData.idDaun;
+							login_username = jsonData.login_username;
+			
+							if( function_result == 0 ){
+								alert('Login gagal. pastikan username dan password Anda, benar.');
+								closeModal();
+							} else if( function_result == 1 ){
+								localStorage.clear();
+								localStorage.setItem("mydaun_member_login_time",login_time);
+								localStorage.setItem("mydaun_member_idDaun",idDaun);
+								localStorage.setItem("mydaun_member_login_username",login_username);
+								
+								window.location="MEMBER/dashboard.html";
+								closeModal();
+							}
+						}
+					};
+					xhttp.open("POST", "http://localhost/development_site/mydaun/daun/MOBILE_API/member/general.php?action=Login", true);
+					xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+					xhttp.send("kode_member1=EZ-00000&kode_member2="+username+"&password="+password);
+					
+				}
+				
+			}
+			
+			function openModal(){
+			  document.getElementById("modal").style.display="block";
+			}
+
+			function closeModal(){
+			  document.getElementById("modal").style.display="none";
+			}
+		</script>
         
 	</body>
 </html>
