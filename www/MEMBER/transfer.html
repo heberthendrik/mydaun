@@ -526,21 +526,21 @@
 											<div class="form-group">
 												<label class="col-md-3 control-label" for="inputDefault">Nama Tujuan</label>
 												<div class="col-md-6">
-													<input type="text" class="form-control" id="input_namatujuan" disabled>
+													<input type="text" class="form-control" id="input_namatujuan" readonly>
 												</div>
 											</div>
 											
 											<div class="form-group">
 												<label class="col-md-3 control-label" for="inputDefault">Jumlah</label>
 												<div class="col-md-6">
-													<input type="number" class="form-control" id="inputDefault" placeholder="0">
+													<input type="number" class="form-control" id="input_jumlah" placeholder="0">
 												</div>
 											</div>
 											
 											<div class="form-group">
 												<label class="col-md-3 control-label" for="textareaAutosize">Keterangan</label>
 												<div class="col-md-6">
-													<textarea class="form-control" rows="3" id="textareaAutosize" data-plugin-textarea-autosize></textarea>
+													<textarea class="form-control" rows="3" id="input_keterangan" data-plugin-textarea-autosize></textarea>
 												</div>
 											</div>
 						
@@ -574,7 +574,7 @@
 										<footer class="panel-footer">
 											<div class="row">
 												<div class="col-md-12 text-right">
-													<button class="btn btn-primary modal-confirm">Ya, Transfer</button>
+													<button class="btn btn-primary modal-confirm" onclick="ExecuteTransfer();">Ya, Transfer</button>
 													<button class="btn btn-default modal-dismiss">Kembali</button>
 												</div>
 											</div>
@@ -746,7 +746,11 @@
 						var function_result = jsonData.function_result;
 						nama_tujuan = jsonData.nama;
 		
-						if( function_result == 0 ){
+						if( kodetujuan == '' ){
+							document.getElementById('input_namatujuan').value = '-';
+						}
+						
+						else if( function_result == 0 ){
 						
 							document.getElementById('input_namatujuan').value = 'Data tidak ditemukan';
 							
@@ -764,6 +768,42 @@
 			}
 			
 			setInterval(SearchNamaMemberByKodeMember,100);
+			
+			function ExecuteTransfer(){
+				
+				kodetujuan = document.getElementById('input_kodetujuan').value;
+				namatujuan = document.getElementById('input_namatujuan').value;
+				jumlah = document.getElementById('input_jumlah').value;
+				keterangan = document.getElementById('input_keterangan').value;
+				kodepengirim = localStorage.getItem('mydaun_member_idDaun');
+				namapengirim = localStorage.getItem('mydaun_member_login_username');
+				
+				if( kodetujuan == '' || jumlah == '' || keterangan == '' ){
+					alert('Pastikan untuk mengisi seluruh data di form ini.');
+				} else {
+					var xhttp = new XMLHttpRequest();
+					xhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							
+							var jsonData = JSON.parse(this.responseText);
+							var function_result = jsonData.function_result;
+							function_message = jsonData.function_message;
+			
+							if( function_result == 0 ){
+								alert(function_message);
+							} else if( function_result == 1 ){
+								alert(function_message);
+								window.location='transfer.html';
+							} 
+							
+						}
+					};
+					xhttp.open("POST", "http://localhost/development_site/mydaun/daun/MOBILE_API/member/transfer.php?action=ExecuteTransfer", true);
+					xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+					xhttp.send("kode_tujuan="+kodetujuan+"&kode_pengirim="+kodepengirim+"&nama_pengirim="+namapengirim+"&nama_tujuan="+namatujuan+"&jmlh_transfer="+jumlah+"&deskripsi="+keterangan);	
+				}
+				
+			}
 		
 		</script>
 		
