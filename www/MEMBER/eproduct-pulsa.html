@@ -62,6 +62,42 @@
 
 		<!-- Head Libs -->
 		<script src="../LIBRARY/assets/vendor/modernizr/modernizr.js"></script>
+		
+		<!-- LOADING -->
+		<style>
+			.modal {
+			display:    none;
+			position:   fixed;
+			z-index:    1000;
+			top:        0;
+			left:       0;
+			height:     100%;
+			width:      100%;
+			background: rgba( 255, 255, 255, .8 )
+			url('../MEDIA/loading.gif')
+			50% 50%
+			no-repeat;
+			}
+			/* When the body has the loading class, we turn
+			the scrollbar off with overflow:hidden */
+			body.loading .modal {
+			overflow: hidden;
+			}
+			/* Anytime the body has the loading class, our
+			modal element will be visible */
+			body.loading .modal {
+			display: block;
+			}
+		</style>
+		<!-- LOADING -->
+		
+		<style>
+			.sidebar-widget.widget-tasks ul li:nth-child(6n+1):before,
+			.sidebar-widget.widget-tasks ul li:before,
+			.sidebar-widget.widget-tasks ul li:before{
+				border-color:transparent!important;
+			}
+		</style>
 
 	</head>
 	<body>
@@ -412,11 +448,15 @@
 			
 										<ul class="simple-card-list mb-xlg">
 											<li class="primary">
-												<h3>488</h3>
+												<h3 id="display_mydaunlembar_nav">
+													<img src="../MEDIA/loading.gif" class="img-responsive" style="max-height:50px;margin:0 auto;" />
+												</h3>
 												<p>My Daun (Lembar)</p>
 											</li>
 											<li class="primary">
-												<h3>189.000</h3>
+												<h3 id="display_mypoin_nav">
+													<img src="../MEDIA/loading.gif" class="img-responsive" style="max-height:50px;margin:0 auto;" />
+												</h3>
 												<p>My Poin</p>
 											</li>
 										</ul>
@@ -480,31 +520,23 @@
 											<div class="form-group">
 												<label class="col-md-3 control-label" for="inputDefault">Provider Anda</label>
 												<div class="col-md-6">
-													<select class="form-control mb-md">
+													<select class="form-control mb-md" id="input_provider" onchange="RefreshNominal()">
 														<option>--Silahkan Pilih Provider Anda--</option>
-														<option>XL</option>
-														<option>TSEL</option>
-														<option>SMARTFREN</option>
-														<option>INDOSAT</option>
-														<option>AXIS</option>
-														<option>3PRABAYAR</option>
+														<option value="XL">XL</option>
+														<option value="TSEL">TSEL</option>
+														<option value="SMARTFREN">SMARTFREN</option>
+														<option value="INDOSAT">INDOSAT</option>
+														<option value="AXIS">AXIS</option>
+														<option value="3PRABAYAR">3PRABAYAR</option>
 													</select>
 												</div>
 											</div>
-										
+											
 											<div class="form-group">
 												<label class="col-md-3 control-label" for="inputDefault">Nominal</label>
-												<div class="col-md-6">
-													<select class="form-control mb-md">
+												<div class="col-md-6" id="display_nominal">
+													<select class="form-control mb-md" id="input_nominal">
 														<option>--Silahkan Pilih Nominal--</option>
-														<option>5.000</option>
-														<option>10.000</option>
-														<option>20.000</option>
-														<option>25.000</option>
-														<option>30.000</option>
-														<option>50.000</option>
-														<option>100.000</option>
-														<option>150.000</option>
 													</select>
 												</div>
 											</div>
@@ -512,14 +544,14 @@
 											<div class="form-group">
 												<label class="col-md-3 control-label" for="inputDefault">Nomor Handphone</label>
 												<div class="col-md-6">
-													<input type="text" class="form-control" id="inputDefault" placeholder="0812xxxxxxx">
+													<input type="text" class="form-control" id="input_nomor" placeholder="0812xxxxxxx">
 												</div>
 											</div>
 											
 											<div class="form-group">
 												<label class="col-md-3 control-label" for="inputDefault">Pembayaran</label>
 												<div class="col-md-6">
-													<input type="text" class="form-control" id="inputDefault" value="Daun" disabled>
+													<input type="text" class="form-control" id="input_pembayaran" value="Daun" disabled>
 												</div>
 											</div>
 											
@@ -555,7 +587,7 @@
 										<footer class="panel-footer">
 											<div class="row">
 												<div class="col-md-12 text-right">
-													<button class="btn btn-primary modal-confirm">Ya, Lanjutkan Pembelian</button>
+													<button class="btn btn-primary modal-confirm" onclick="ExecuteBeliPulsa()">Ya, Lanjutkan Pembelian</button>
 													<button class="btn btn-default modal-dismiss">Kembali</button>
 												</div>
 											</div>
@@ -670,6 +702,113 @@
 		<!-- Examples -->
 		<script src="../LIBRARY/assets/javascripts/ui-elements/examples.modals.js"></script>
 		
+		<script>
+		
+			loadGeneralInfo();
+			function loadGeneralInfo(){
+				
+				idDaun = localStorage.getItem('mydaun_member_idDaun');
+				
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						
+						var jsonData = JSON.parse(this.responseText);
+						var function_result = jsonData.function_result;
+						mydaunlembar = jsonData.saldo;
+						mypoin = jsonData.point;
+		
+						if( function_result == 0 ){
+							alert('Terjadi kesalahan teknis. Silahkan refresh page ini.');
+						} else if( function_result == 1 ){
+							
+							document.getElementById('display_mydaunlembar_nav').innerHTML = mydaunlembar;
+							document.getElementById('display_mypoin_nav').innerHTML = mypoin;
+							
+						}
+					}
+				};
+				xhttp.open("POST", "http://localhost/development_site/mydaun/daun/MOBILE_API/member/general.php?action=GetCurrentAccount", true);
+				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				xhttp.send("idDaun="+idDaun);
+				
+			}
+			
+			function logout(){
+				localStorage.clear();
+				window.location="../index.html";
+			}
+			
+			function openModal(){
+			  	document.getElementById("modal").style.display="block";
+			}
+
+			function closeModal(){
+			  	document.getElementById("modal").style.display="none";
+			}
+			
+			function ExecuteBeliPulsa(){
+				
+				provider = document.getElementById('input_provider').value;
+				nominal = document.getElementById('input_nominal').value;
+				nomorhandphone = document.getElementById('input_nomor').value;
+				pembayaran = document.getElementById('input_pembayaran').value;
+				kodepengirim = localStorage.getItem('mydaun_member_idDaun');
+				namapengirim = localStorage.getItem('mydaun_member_login_username');
+				
+				if( provider == '' || nominal == '' || nomorhandphone == '' ){
+					alert('Pastikan untuk mengisi seluruh data di form ini.');
+				} else {
+				
+					var xhttp = new XMLHttpRequest();
+					xhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							
+							var jsonData = JSON.parse(this.responseText);
+							var function_result = jsonData.function_result;
+							function_message = jsonData.function_message;
+							
+							if( function_result == 0 ){
+								alert(function_message);
+							} else if( function_result == 1 ){
+								alert(function_message);
+								window.location='eproduct-pulsa.html';
+							} 
+
+							
+						}
+					};
+					xhttp.open("POST", "http://localhost/development_site/mydaun/daun/MOBILE_API/member/purchase.php?action=SubmitPurchasePulsa", true);
+					xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+					xhttp.send("kode_member="+kodepengirim+"&nama_member="+namapengirim+"&provider="+provider+"&hPulsa="+nominal+"&hJual="+nominal+"&no_telp="+nomorhandphone);	
+					
+				}
+				
+			}
+			
+			function RefreshNominal(){
+			
+				inputprovider = document.getElementById('input_provider').value;
+				
+				if( inputprovider == 'XL' ){
+					document.getElementById('display_nominal').innerHTML = '<select class="form-control mb-md" id="input_nominal"><option>--Silahkan Pilih Nominal--</option><option value="harga1">5.000</option><option value="harga2">10.000</option><option value="harga3">25.000</option><option value="harga4">50.000</option><option value="harga5">100.000</option><option value="harga6">150.000</option><option value="harga7">200.000</option><option value="harga8">300.000</option></select>';	
+				} else if( inputprovider == 'XL' ){
+					document.getElementById('display_nominal').innerHTML = '<select class="form-control mb-md" id="input_nominal"><option>--Silahkan Pilih Nominal--</option><option value="harga1">5.000</option><option value="harga2">10.000</option><option value="harga3">25.000</option><option value="harga4">50.000</option><option value="harga5">100.000</option><option value="harga6">150.000</option><option value="harga7">200.000</option><option value="harga8">300.000</option></select>';
+				} else if( inputprovider == 'SMARTFREN' ){
+					document.getElementById('display_nominal').innerHTML = '<select class="form-control mb-md" id="input_nominal"><option>--Silahkan Pilih Nominal--</option><option value="harga1">5.000</option><option value="harga2">10.000</option><option value="harga3">25.000</option><option value="harga4">50.000</option><option value="harga5">60.000</option><option value="harga6">100.000</option><option value="harga7">150.000</option><option value="harga8">200.000</option></select>';
+				} else if( inputprovider == 'INDOSAT' ){
+					document.getElementById('display_nominal').innerHTML = '<select class="form-control mb-md" id="input_nominal"><option>--Silahkan Pilih Nominal--</option><option value="harga1">5.000</option><option value="harga2">10.000</option><option value="harga3">25.000</option><option value="harga4">50.000</option><option value="harga5">100.000</option><option value="harga6">150.000</option><option value="harga7">200.000</option><option value="harga8">250.000</option></select>';
+				} else if( inputprovider == 'AXIS' ){
+					document.getElementById('display_nominal').innerHTML = '<select class="form-control mb-md" id="input_nominal"><option>--Silahkan Pilih Nominal--</option><option value="harga1">5.000</option><option value="harga2">10.000</option><option value="harga3">25.000</option><option value="harga4">50.000</option><option value="harga5">100.000</option><option value="harga6">150.000</option><option value="harga7">200.000</option></select>';
+				} else if( inputprovider == '3PRABAYAR' ){
+					document.getElementById('display_nominal').innerHTML = '<select class="form-control mb-md" id="input_nominal"><option>--Silahkan Pilih Nominal--</option><option value="harga1">5.000</option><option value="harga2">10.000</option><option value="harga3">20.000</option><option value="harga4">25.000</option><option value="harga5">30.000</option><option value="harga6">50.000</option><option value="harga7">100.000</option><option value="harga8">150.000</option></select>';
+				}
+				
+			}
+			
+		</script>
+											
+		<div id="modal" class="modal"><!-- Place at bottom of page --></div>
 		<script type="text/javascript" src="../cordova.js"></script>
         <script type="text/javascript" src="../js/index.js"></script>
         
