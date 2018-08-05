@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html class="fixed">
+	<head>
+
+		<!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+
+
+		<!-- Web Fonts  -->
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+
+		<!-- Vendor CSS -->
+		<link rel="stylesheet" href="LIBRARY/assets/vendor/bootstrap/css/bootstrap.css" />
+
+		<link rel="stylesheet" href="LIBRARY/assets/vendor/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" href="LIBRARY/assets/vendor/magnific-popup/magnific-popup.css" />
+		<link rel="stylesheet" href="LIBRARY/assets/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css" />
+
+		<!-- Theme CSS -->
+		<link rel="stylesheet" href="LIBRARY/assets/stylesheets/theme.css" />
+
+		<!-- Skin CSS -->
+		<link rel="stylesheet" href="LIBRARY/assets/stylesheets/skins/default.css" />
+
+		<!-- Theme Custom CSS -->
+		<link rel="stylesheet" href="LIBRARY/assets/stylesheets/theme-custom.css">
+
+		<!-- Head Libs -->
+		<script src="LIBRARY/assets/vendor/modernizr/modernizr.js"></script>
+
+	</head>
+	<body>
+		<!-- start: page -->
+		<section class="body-sign">
+			<div class="center-sign">
+				<a href="/" class="logo pull-left">
+					<img src="MEDIA/logodaun.gif" height="54" alt="Porto Admin" />
+				</a>
+
+				<div class="panel panel-sign">
+					<div class="panel-title-sign mt-xl text-right">
+						<h2 class="title text-uppercase text-weight-bold m-none" style="background:#7fc12c;text-shadow:none;letter-spacing:1px;"><i class="fa fa-user mr-xs"></i> Sign In</h2>
+					</div>
+					<div class="panel-body" style="border-top-color:#7fc12c;">
+						<form action="index.html" method="post">
+							<div class="form-group mb-lg">
+								<label>Username</label>
+								<div class="input-group input-group-icon">
+									<input name="username" type="text" class="form-control input-lg" />
+									<span class="input-group-addon">
+										<span class="icon icon-lg">
+											<i class="fa fa-user"></i>
+										</span>
+									</span>
+								</div>
+							</div>
+
+							<div class="form-group mb-lg">
+								<div class="clearfix">
+									<label class="pull-left">Password</label>
+								</div>
+								<div class="input-group input-group-icon">
+									<input name="pwd" type="password" class="form-control input-lg" />
+									<span class="input-group-addon">
+										<span class="icon icon-lg">
+											<i class="fa fa-lock"></i>
+										</span>
+									</span>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-sm-12 text-right">
+									<button type="submit" class="btn btn-primary hidden-xs" style="width:100%;background:#7fc12c;border-color:#7fc12c;">Masuk</button>
+									<button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg" style="width:100%;background:#7fc12c;border-color:#7fc12c;">Masuk</button>
+								</div>
+								<div class="col-sm-12 text-right" style="margin-top:10px;">
+									<button type="submit" class="btn btn-primary hidden-xs" style="width:100%;background:#fff;color:#7fc12c;border-color:#7fc12c;text-shadow:none;">Login sebagai merchant?</button>
+									<button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg" style="width:100%;background:#fff;color:#7fc12c;border-color:#7fc12c;text-shadow:none;">Login sebagai merchant?</button>
+								</div>
+							</div>
+
+						</form>
+					</div>
+				</div>
+
+				
+			</div>
+		</section>
+		<!-- end: page -->
+
+		<!-- Vendor -->
+		<script src="LIBRARY/assets/vendor/jquery/jquery.js"></script>
+		<script src="LIBRARY/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
+		<script src="LIBRARY/assets/vendor/bootstrap/js/bootstrap.js"></script>
+		<script src="LIBRARY/assets/vendor/nanoscroller/nanoscroller.js"></script>
+		<script src="LIBRARY/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+		<script src="LIBRARY/assets/vendor/magnific-popup/jquery.magnific-popup.js"></script>
+		<script src="LIBRARY/assets/vendor/jquery-placeholder/jquery-placeholder.js"></script>
+		
+		<!-- Theme Base, Components and Settings -->
+		<script src="LIBRARY/assets/javascripts/theme.js"></script>
+		
+		<!-- Theme Custom -->
+		<script src="LIBRARY/assets/javascripts/theme.custom.js"></script>
+		
+		<!-- Theme Initialization Files -->
+		<script src="LIBRARY/assets/javascripts/theme.init.js"></script>
+		
+		
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        
+	</body>
+</html>
