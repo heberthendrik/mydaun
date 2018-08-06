@@ -719,7 +719,7 @@
 						}
 					}
 				};
-				xhttp.open("POST", "http://localhost/development_site/mydaun/daun/MOBILE_API/member/general.php?action=GetCurrentAccount", true);
+				xhttp.open("POST", "https://heberthendrik.com/development_site/mydaun/daun/MOBILE_API/member/general.php?action=GetCurrentAccount", true);
 				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 				xhttp.send("idDaun="+idDaun);
 				
@@ -768,7 +768,7 @@
 							
 						}
 					};
-					xhttp.open("POST", "http://localhost/development_site/mydaun/daun/MOBILE_API/member/purchase.php?action=SubmitPurchaseGoPay", true);
+					xhttp.open("POST", "https://heberthendrik.com/development_site/mydaun/daun/MOBILE_API/member/purchase.php?action=SubmitPurchaseGoPay", true);
 					xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 					xhttp.send("kode_member="+kodepengirim+"&nama_member="+namapengirim+"&provider="+provider+"&hPulsa="+nominal+"&no_telp="+nomorhandphone);	
 					

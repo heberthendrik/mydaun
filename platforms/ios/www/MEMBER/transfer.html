@@ -62,6 +62,42 @@
 
 		<!-- Head Libs -->
 		<script src="../LIBRARY/assets/vendor/modernizr/modernizr.js"></script>
+		
+		<!-- LOADING -->
+		<style>
+			.modal {
+			display:    none;
+			position:   fixed;
+			z-index:    1000;
+			top:        0;
+			left:       0;
+			height:     100%;
+			width:      100%;
+			background: rgba( 255, 255, 255, .8 )
+			url('../MEDIA/loading.gif')
+			50% 50%
+			no-repeat;
+			}
+			/* When the body has the loading class, we turn
+			the scrollbar off with overflow:hidden */
+			body.loading .modal {
+			overflow: hidden;
+			}
+			/* Anytime the body has the loading class, our
+			modal element will be visible */
+			body.loading .modal {
+			display: block;
+			}
+		</style>
+		<!-- LOADING -->
+		
+		<style>
+			.sidebar-widget.widget-tasks ul li:nth-child(6n+1):before,
+			.sidebar-widget.widget-tasks ul li:before,
+			.sidebar-widget.widget-tasks ul li:before{
+				border-color:transparent!important;
+			}
+		</style>
 
 	</head>
 	<body>
@@ -412,11 +448,15 @@
 			
 										<ul class="simple-card-list mb-xlg">
 											<li class="primary">
-												<h3>488</h3>
+												<h3 id="display_mydaunlembar_nav">
+													<img src="../MEDIA/loading.gif" class="img-responsive" style="max-height:50px;margin:0 auto;" />
+												</h3>
 												<p>My Daun (Lembar)</p>
 											</li>
 											<li class="primary">
-												<h3>189.000</h3>
+												<h3 id="display_mypoin_nav">
+													<img src="../MEDIA/loading.gif" class="img-responsive" style="max-height:50px;margin:0 auto;" />
+												</h3>
 												<p>My Poin</p>
 											</li>
 										</ul>
@@ -479,28 +519,28 @@
 											<div class="form-group">
 												<label class="col-md-3 control-label" for="inputDefault">Kode Tujuan</label>
 												<div class="col-md-6">
-													<input type="text" class="form-control" id="inputDefault" placeholder="Masukan Kode Tujuan">
+													<input type="text" class="form-control" placeholder="Masukan Kode Tujuan" id="input_kodetujuan">
 												</div>
 											</div>
 											
 											<div class="form-group">
 												<label class="col-md-3 control-label" for="inputDefault">Nama Tujuan</label>
 												<div class="col-md-6">
-													<input type="text" class="form-control" id="inputDefault" disabled>
+													<input type="text" class="form-control" id="input_namatujuan" readonly>
 												</div>
 											</div>
 											
 											<div class="form-group">
 												<label class="col-md-3 control-label" for="inputDefault">Jumlah</label>
 												<div class="col-md-6">
-													<input type="number" class="form-control" id="inputDefault" placeholder="0">
+													<input type="number" class="form-control" id="input_jumlah" placeholder="0">
 												</div>
 											</div>
 											
 											<div class="form-group">
 												<label class="col-md-3 control-label" for="textareaAutosize">Keterangan</label>
 												<div class="col-md-6">
-													<textarea class="form-control" rows="3" id="textareaAutosize" data-plugin-textarea-autosize></textarea>
+													<textarea class="form-control" rows="3" id="input_keterangan" data-plugin-textarea-autosize></textarea>
 												</div>
 											</div>
 						
@@ -534,7 +574,7 @@
 										<footer class="panel-footer">
 											<div class="row">
 												<div class="col-md-12 text-right">
-													<button class="btn btn-primary modal-confirm">Ya, Transfer</button>
+													<button class="btn btn-primary modal-confirm" onclick="ExecuteTransfer();">Ya, Transfer</button>
 													<button class="btn btn-default modal-dismiss">Kembali</button>
 												</div>
 											</div>
@@ -649,6 +689,125 @@
 		<!-- Examples -->
 		<script src="../LIBRARY/assets/javascripts/ui-elements/examples.modals.js"></script>
 		
+		<script>
+		
+			loadGeneralInfo();
+			function loadGeneralInfo(){
+				
+				idDaun = localStorage.getItem('mydaun_member_idDaun');
+				
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						
+						var jsonData = JSON.parse(this.responseText);
+						var function_result = jsonData.function_result;
+						mydaunlembar = jsonData.saldo;
+						mypoin = jsonData.point;
+		
+						if( function_result == 0 ){
+							alert('Terjadi kesalahan teknis. Silahkan refresh page ini.');
+						} else if( function_result == 1 ){
+							
+							document.getElementById('display_mydaunlembar_nav').innerHTML = mydaunlembar;
+							document.getElementById('display_mypoin_nav').innerHTML = mypoin;
+							
+						}
+					}
+				};
+				xhttp.open("POST", "https://heberthendrik.com/development_site/mydaun/daun/MOBILE_API/member/general.php?action=GetCurrentAccount", true);
+				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				xhttp.send("idDaun="+idDaun);
+				
+			}
+			
+			function logout(){
+				localStorage.clear();
+				window.location="../index.html";
+			}
+			
+			function openModal(){
+			  	document.getElementById("modal").style.display="block";
+			}
+
+			function closeModal(){
+			  	document.getElementById("modal").style.display="none";
+			}
+			
+			function SearchNamaMemberByKodeMember(){
+				
+				kodetujuan = document.getElementById('input_kodetujuan').value;
+				
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						
+						var jsonData = JSON.parse(this.responseText);
+						var function_result = jsonData.function_result;
+						nama_tujuan = jsonData.nama;
+		
+						if( kodetujuan == '' ){
+							document.getElementById('input_namatujuan').value = '-';
+						}
+						
+						else if( function_result == 0 ){
+						
+							document.getElementById('input_namatujuan').value = 'Data tidak ditemukan';
+							
+						} else if( function_result == 1 ){
+							
+							document.getElementById('input_namatujuan').value = nama_tujuan;
+							
+						}
+					}
+				};
+				xhttp.open("POST", "https://heberthendrik.com/development_site/mydaun/daun/MOBILE_API/member/general.php?action=GetCurrentAccount", true);
+				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				xhttp.send("idDaun="+kodetujuan);
+				
+			}
+			
+			setInterval(SearchNamaMemberByKodeMember,100);
+			
+			function ExecuteTransfer(){
+				
+				kodetujuan = document.getElementById('input_kodetujuan').value;
+				namatujuan = document.getElementById('input_namatujuan').value;
+				jumlah = document.getElementById('input_jumlah').value;
+				keterangan = document.getElementById('input_keterangan').value;
+				kodepengirim = localStorage.getItem('mydaun_member_idDaun');
+				namapengirim = localStorage.getItem('mydaun_member_login_username');
+				
+				if( kodetujuan == '' || jumlah == '' || keterangan == '' ){
+					alert('Pastikan untuk mengisi seluruh data di form ini.');
+				} else {
+					var xhttp = new XMLHttpRequest();
+					xhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							
+							var jsonData = JSON.parse(this.responseText);
+							var function_result = jsonData.function_result;
+							function_message = jsonData.function_message;
+			
+							if( function_result == 0 ){
+								alert(function_message);
+							} else if( function_result == 1 ){
+								alert(function_message);
+								window.location='transfer.html';
+							} 
+							
+						}
+					};
+					xhttp.open("POST", "https://heberthendrik.com/development_site/mydaun/daun/MOBILE_API/member/transfer.php?action=ExecuteTransfer", true);
+					xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+					xhttp.send("kode_tujuan="+kodetujuan+"&kode_pengirim="+kodepengirim+"&nama_pengirim="+namapengirim+"&nama_tujuan="+namatujuan+"&jmlh_transfer="+jumlah+"&deskripsi="+keterangan);	
+				}
+				
+			}
+		
+		</script>
+		
+		<div id="modal" class="modal"><!-- Place at bottom of page --></div>
 		<script type="text/javascript" src="../cordova.js"></script>
         <script type="text/javascript" src="../js/index.js"></script>
         

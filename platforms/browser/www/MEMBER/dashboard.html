@@ -608,11 +608,11 @@
 										</div>
 									</div>
 									<div class="panel-body" style="margin-top:10px;">
-										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;">Penerimaan</button>
-										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;">Transfer</button>
-										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;">Pembayaran</button>
-										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;">Konversi</button>
-										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;">Lihat Semua Mutasi</button>
+										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;" onclick="window.location='history-terima.html'">Penerimaan</button>
+										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;" onclick="window.location='history-transfer.html'">Transfer</button>
+										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;" onclick="window.location='history-bayar.html'">Pembayaran</button>
+										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;" onclick="window.location='history-konversi.html'">Konversi</button>
+										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;" onclick="window.location='lihat-semua-mutasi.html'">Lihat Semua Mutasi</button>
 									</div>
 									<footer class="panel-footer">
 										<div class="row">
@@ -674,11 +674,11 @@
 										</div>
 									</div>
 									<div class="panel-body" style="margin-top:10px;">
-										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;">Pulsa</button>
-										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;">Paket Data</button>
-										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;">Token Listrik</button>
-										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;">Listrik Bulanan</button>
-										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;">Isi GoPay</button>
+										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;" onclick="window.location='eproduct-pulsa.html'">Pulsa</button>
+										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;" onclick="window.location='eproduct-paket-data.html'">Paket Data</button>
+										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;" onclick="window.location='eproduct-token-listrik.html'">Token Listrik</button>
+										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;" onclick="window.location='eproduct-listrik-bulanan.html'">Listrik Bulanan</button>
+										<button type="button" class="mb-xs mt-xs mr-xs btn btn-default" style="width:100%;" onclick="window.location='eproduct-isi-gopay.html'">Isi GoPay</button>
 									</div>
 									<footer class="panel-footer">
 										<div class="row">
@@ -848,7 +848,7 @@
 						}
 					}
 				};
-				xhttp.open("POST", "http://localhost/development_site/mydaun/daun/MOBILE_API/member/general.php?action=GetCurrentAccount", true);
+				xhttp.open("POST", "https://heberthendrik.com/development_site/mydaun/daun/MOBILE_API/member/general.php?action=GetCurrentAccount", true);
 				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 				xhttp.send("idDaun="+idDaun);
 				

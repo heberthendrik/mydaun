@@ -62,6 +62,42 @@
 
 		<!-- Head Libs -->
 		<script src="../LIBRARY/assets/vendor/modernizr/modernizr.js"></script>
+		
+		<!-- LOADING -->
+		<style>
+			.modal {
+			display:    none;
+			position:   fixed;
+			z-index:    1000;
+			top:        0;
+			left:       0;
+			height:     100%;
+			width:      100%;
+			background: rgba( 255, 255, 255, .8 )
+			url('../MEDIA/loading.gif')
+			50% 50%
+			no-repeat;
+			}
+			/* When the body has the loading class, we turn
+			the scrollbar off with overflow:hidden */
+			body.loading .modal {
+			overflow: hidden;
+			}
+			/* Anytime the body has the loading class, our
+			modal element will be visible */
+			body.loading .modal {
+			display: block;
+			}
+		</style>
+		<!-- LOADING -->
+		
+		<style>
+			.sidebar-widget.widget-tasks ul li:nth-child(6n+1):before,
+			.sidebar-widget.widget-tasks ul li:before,
+			.sidebar-widget.widget-tasks ul li:before{
+				border-color:transparent!important;
+			}
+		</style>
 
 	</head>
 	<body>
@@ -412,11 +448,15 @@
 			
 										<ul class="simple-card-list mb-xlg">
 											<li class="primary">
-												<h3>488</h3>
+												<h3 id="display_mydaunlembar_nav">
+													<img src="../MEDIA/loading.gif" class="img-responsive" style="max-height:50px;margin:0 auto;" />
+												</h3>
 												<p>My Daun (Lembar)</p>
 											</li>
 											<li class="primary">
-												<h3>189.000</h3>
+												<h3 id="display_mypoin_nav">
+													<img src="../MEDIA/loading.gif" class="img-responsive" style="max-height:50px;margin:0 auto;" />
+												</h3>
 												<p>My Poin</p>
 											</li>
 										</ul>
@@ -480,22 +520,22 @@
 											<div class="form-group">
 												<label class="col-md-3 control-label" for="inputDefault">Provider Anda</label>
 												<div class="col-md-6">
-													<select class="form-control mb-md">
+													<select class="form-control mb-md" id="input_provider" onchange="RefreshNominal()">
 														<option>--Silahkan Pilih Provider Anda--</option>
-														<option>XL</option>
-														<option>TSEL</option>
-														<option>SMARTFREN</option>
-														<option>INDOSAT</option>
-														<option>AXIS</option>
-														<option>3PRABAYAR</option>
+														<option value="XL">XL</option>
+														<option value="TSEL">TSEL</option>
+														<option value="SMARTFREN">SMARTFREN</option>
+														<option value="INDOSAT">INDOSAT</option>
+														<option value="AXIS">AXIS</option>
+														<option value="3PRABAYAR">3PRABAYAR</option>
 													</select>
 												</div>
 											</div>
 										
 											<div class="form-group">
 												<label class="col-md-3 control-label" for="inputDefault">Nominal</label>
-												<div class="col-md-6">
-													<select class="form-control mb-md">
+												<div class="col-md-6" id="display_nominal">
+													<select class="form-control mb-md" id="input_nominal">
 														<option>--Silahkan Pilih Paket Data--</option>
 														<option value="harga2">10GB+10GB(Youtube 01-06)+Telp(30m) 30hr  - Rp. 77.000</option>
 													    <option value="harga3">15GB+15GB(Youtube 01-06)+Telp(40m) 30hr - Rp. 111.000</option>
@@ -514,14 +554,14 @@
 											<div class="form-group">
 												<label class="col-md-3 control-label" for="inputDefault">Nomor Handphone</label>
 												<div class="col-md-6">
-													<input type="text" class="form-control" id="inputDefault" placeholder="0812xxxxxxx">
+													<input type="text" class="form-control" id="input_nomor" placeholder="0812xxxxxxx">
 												</div>
 											</div>
 											
 											<div class="form-group">
 												<label class="col-md-3 control-label" for="inputDefault">Pembayaran</label>
 												<div class="col-md-6">
-													<input type="text" class="form-control" id="inputDefault" value="Daun" disabled>
+													<input type="text" class="form-control" id="input_pembayaran" value="Daun" disabled>
 												</div>
 											</div>
 											
@@ -557,7 +597,7 @@
 										<footer class="panel-footer">
 											<div class="row">
 												<div class="col-md-12 text-right">
-													<button class="btn btn-primary modal-confirm">Ya, Lanjutkan Pembelian</button>
+													<button class="btn btn-primary modal-confirm" onclick="ExecuteBeliPaketData()">Ya, Lanjutkan Pembelian</button>
 													<button class="btn btn-default modal-dismiss">Kembali</button>
 												</div>
 											</div>
@@ -672,6 +712,113 @@
 		<!-- Examples -->
 		<script src="../LIBRARY/assets/javascripts/ui-elements/examples.modals.js"></script>
 		
+		<script>
+		
+			loadGeneralInfo();
+			function loadGeneralInfo(){
+				
+				idDaun = localStorage.getItem('mydaun_member_idDaun');
+				
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						
+						var jsonData = JSON.parse(this.responseText);
+						var function_result = jsonData.function_result;
+						mydaunlembar = jsonData.saldo;
+						mypoin = jsonData.point;
+		
+						if( function_result == 0 ){
+							alert('Terjadi kesalahan teknis. Silahkan refresh page ini.');
+						} else if( function_result == 1 ){
+							
+							document.getElementById('display_mydaunlembar_nav').innerHTML = mydaunlembar;
+							document.getElementById('display_mypoin_nav').innerHTML = mypoin;
+							
+						}
+					}
+				};
+				xhttp.open("POST", "https://heberthendrik.com/development_site/mydaun/daun/MOBILE_API/member/general.php?action=GetCurrentAccount", true);
+				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				xhttp.send("idDaun="+idDaun);
+				
+			}
+			
+			function logout(){
+				localStorage.clear();
+				window.location="../index.html";
+			}
+			
+			function openModal(){
+			  	document.getElementById("modal").style.display="block";
+			}
+
+			function closeModal(){
+			  	document.getElementById("modal").style.display="none";
+			}
+			
+			function ExecuteBeliPaketData(){
+				
+				provider = document.getElementById('input_provider').value;
+				nominal = document.getElementById('input_nominal').value;
+				nomorhandphone = document.getElementById('input_nomor').value;
+				pembayaran = document.getElementById('input_pembayaran').value;
+				kodepengirim = localStorage.getItem('mydaun_member_idDaun');
+				namapengirim = localStorage.getItem('mydaun_member_login_username');
+				
+				if( provider == '' || nominal == '' || nomorhandphone == '' ){
+					alert('Pastikan untuk mengisi seluruh data di form ini.');
+				} else {
+				
+					var xhttp = new XMLHttpRequest();
+					xhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							
+							var jsonData = JSON.parse(this.responseText);
+							var function_result = jsonData.function_result;
+							function_message = jsonData.function_message;
+							
+							if( function_result == 0 ){
+								alert(function_message);
+							} else if( function_result == 1 ){
+								alert(function_message);
+								window.location='eproduct-paket-data.html';
+							} 
+
+							
+						}
+					};
+					xhttp.open("POST", "https://heberthendrik.com/development_site/mydaun/daun/MOBILE_API/member/purchase.php?action=SubmitPurchasePaketData", true);
+					xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+					xhttp.send("kode_member="+kodepengirim+"&nama_member="+namapengirim+"&provider="+provider+"&tPaket="+nominal+"&hJual="+nominal+"&no_telp="+nomorhandphone);	
+					
+				}
+				
+			}
+			
+			function RefreshNominal(){
+			
+				inputprovider = document.getElementById('input_provider').value;
+				
+				if( inputprovider == 'XL' ){
+					document.getElementById('display_nominal').innerHTML = '<select class="form-control mb-md" id="input_nominal"><option>--Silahkan Pilih Nominal--</option><option value="harga1">5GB+5GB(Youtube 01-06)+Telp(20m) 30hr - Rp. 52.000</option><option value="harga2">10GB+10GB(Youtube 01-06)+Telp(30m) 30hr  - Rp. 77.000</option><option value="harga3">15GB+15GB(Youtube 01-06)+Telp(40m) 30hr - Rp. 111.000</option><option value="harga4">20GB+20GB(Youtube 01-06)+Telp(60m) 30hr - Rp. 152.000</option><option value="harga5">800MB(HotRod Pro) 24jam 30hr - Rp. 29.000</option><option value="harga6">1.5GB(HotRod Pro) 24jam 30hr - Rp. 44.000</option><option value="harga7">3GB(HotRod Pro) 24jam 30hr - Rp. 53.000</option><option value="harga8">6GB(HotRod Pro) 24jam 30hr - Rp. 86.000</option><option value="harga9">8GB(HotRod Pro) 24jam 30hr - Rp. 111.000</option><option value="harga10">12GB(HotRod Pro) 24jam 30hr - Rp. 155.000</option><option value="harga11">16GB(HotRod Pro) 24jam 30hr - Rp. 185.000</option></select>';	
+				} else if( inputprovider == 'TSEL' ){
+					document.getElementById('display_nominal').innerHTML = '<select class="form-control mb-md" id="input_nominal"><option>--Silahkan Pilih Nominal--</option><option value="harga1">1GB 24jam 3hr - Rp 15.000</option><option value="harga2">1GB 24jam 7hr - Rp. 23.000</option><option value="harga3">1GB(Flash)+2GB(VidMax) 24jam 30hr - Rp. 39.000</option><option value="harga4">2GB(Flash)+2GB(VidMax)+60(Mnt)+60(SMS) 30hr - Rp. 58.000</option><option value="harga5">3GB 24jam 7hr - Rp. 32.000</option><option value="harga6">3GB(Flash)+2GB(Vidmax) 30hr - Rp. 61.000</option><option value="harga7">5GB 24jam 7hr - Rp. 41.000</option><option value="harga8">8GB(Flash)+2GB(Vidmax) 30hr - Rp. 81.000</option><option value="harga9">10GB+2GB(VidMax)+100(Mnt)+100(SMS) 30hr - Rp. 100.000</option><option value="harga10">80MB(Flash) 24jam 7hr - Rp. 13.000</option><option value="harga11">200MB(Flash) 24jam 7hr - Rp. 23.000</option><option value="harga12">400MB(Flash)+1GB(Video) 30hr - Rp. 28.000</option><option value="harga13">1.1GB(Flash)+3GB(Video) 30hr - Rp. 53.000</option><option value="harga14">3GB 24jam 30hr - Rp. 66.000</option><option value="harga15">3.5GB+5GB(Video) 30hr - Rp. 103.000</option><option value="harga16">5GB 24jam 30hr - Rp. 106.000</option></select>';
+				} else if( inputprovider == 'SMARTFREN' ){
+					document.getElementById('display_nominal').innerHTML = '<select class="form-control mb-md" id="input_nominal"><option>--Silahkan Pilih Nominal--</option><option value="harga1">2GB+2GB(00-06) 14hr - Rp. 25.000</option><option value="harga2">1.25GB+1.75GB(00-06) 7hr - Rp. 15.000</option><option value="harga3">4GB+4GB(00-06)+Chat 24jam 14hr - Rp. 34.000</option><option value="harga4">8GB+8GB(00-06) 24jam 30hr - Rp. 63.000</option><option value="harga5">15GB+15GB(00-06) 30hr - Rp. 99.000</option><option value="harga6">30GB+30GB(00-06)+Chat 24jam 30hr - Rp. 203.000</option><option value="harga7">22.5GB+22.5GB(00-06) 30hr - Rp. 152.000</option></select>';
+				} else if( inputprovider == 'INDOSAT' ){
+					document.getElementById('display_nominal').innerHTML = '<select class="form-control mb-md" id="input_nominal"><option>--Silahkan Pilih Nominal--</option><option value="harga1">1GB(YELOW) 1hr - Rp. 5.000</option><option value="harga2">1GB(YELOW) 3hr - Rp. 7.000</option><option value="harga3">1GB(YELOW) 7hr - Rp. 11.000</option><option value="harga4">1GB(YELOW) 15hr - Rp. 16.000</option><option value="harga5">1GB(MINI) 30hr - Rp. 18.000</option><option value="harga6">2GB(MINI) 30hr - Rp. 32.000</option><option value="harga7">1GB + UNLIMITED 30hr - Rp.  22.000</option><option value="harga8">2GB+UNLIMITED 30hr - Rp. 36.000</option><option value="harga9">3GB+UNLIMITED 30hr - Rp. 50.000</option><option value="harga10">7GB+UNLIMITED 30hr - Rp. 63.000</option><option value="harga11">10GB+UNLIMITED 30hr - Rp. 76.000</option><option value="harga12">15GB+UNLIMITED 30hr - Rp. 96.000</option><option value="harga13">UNLIMITED+JUMBO 30hr - Rp. 177.000</option><option value="harga14">12GB(FREEDOM M) 30hr - Rp. 53.000</option><option value="harga15">26GB(FREEDOM L) 30hr - Rp. 81.000</option><option value="harga16">41GB(FREEDOM XL) 30hr - Rp. 99.000</option><option value="harga17">65GB(FREEDOM XXL) 30hr - Rp. 137.000</option><option value="harga18">4GB 30hr - Rp. 56.000</option></select>';
+				} else if( inputprovider == 'AXIS' ){
+					document.getElementById('display_nominal').innerHTML = '<select class="form-control mb-md" id="input_nominal"><option>--Silahkan Pilih Nominal--</option><option value="harga1">1GB 24jam 30hr - Rp. 20.000</option><option value="harga2">1GB+1GB(4G) 24jam 30hr - Rp. 24.000</option><option value="harga3">2GB 24jam 30hr - Rp. 28.000</option><option value="harga4">3GB 24jam 30hr - Rp. 38.000</option><option value="harga5">1GB+3GB(4G)24jam 30hr - Rp. 35.000</option><option value="harga6">5GB 24jam 30hr - Rp. 55.000</option><option value="harga7">2GB+6GB(4G) 24jam 30hr - Rp. 54.000</option><option value="harga8">8GB 24jam 30hr - Rp. 76.000</option><option value="harga9">3GB+9GB(4G) 24jam 30hr - Rp. 70.000</option></select>';
+				} else if( inputprovider == '3PRABAYAR' ){
+					document.getElementById('display_nominal').innerHTML = '<select class="form-control mb-md" id="input_nominal"><option>--Silahkan Pilih Nominal--</option><option value="harga1">1GB+1GB(4G) 30hr - Rp. 21.000</option><option value="harga2">750MB+2GB(4G) 24jam 3hr - Rp. 14.000</option><option value="harga3">2GB+4GB(4G) 30hr - Rp. 39.000</option><option value="harga4">3GB+6GB(4G) 30hr - Rp. 51.000</option><option value="harga5">4GB+8GB(4G)+20GB KENDO 30hr - Rp. 60.000</option><option value="harga6">5GB+10GB(4G)+20GB KENDO 30hr - Rp. 71.000</option><option value="harga7">6GB+12GB(4G)+20GB KENDO 30hr - Rp. 79.000</option><option value="harga8">8GB+16GB(4G)+20GB KENDO 30hr - Rp. 101.000</option><option value="harga9">10GB+20GB(4G)+20GB KENDO 30hr - Rp. 130.000</option><option value="harga10">1,5GB(3G) - Rp. 17.000</option><option value="harga11">3GB(3G) - Rp. 28.000</option></select>';
+				}
+				
+			}
+			
+		</script>
+											
+		<div id="modal" class="modal"><!-- Place at bottom of page --></div>
 		<script type="text/javascript" src="../cordova.js"></script>
         <script type="text/javascript" src="../js/index.js"></script>
         
