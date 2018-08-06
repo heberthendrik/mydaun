@@ -56,6 +56,42 @@
 
 		<!-- Head Libs -->
 		<script src="../LIBRARY/assets/vendor/modernizr/modernizr.js"></script>
+		
+		<!-- LOADING -->
+		<style>
+			.modal {
+			display:    none;
+			position:   fixed;
+			z-index:    1000;
+			top:        0;
+			left:       0;
+			height:     100%;
+			width:      100%;
+			background: rgba( 255, 255, 255, .8 )
+			url('../MEDIA/loading.gif')
+			50% 50%
+			no-repeat;
+			}
+			/* When the body has the loading class, we turn
+			the scrollbar off with overflow:hidden */
+			body.loading .modal {
+			overflow: hidden;
+			}
+			/* Anytime the body has the loading class, our
+			modal element will be visible */
+			body.loading .modal {
+			display: block;
+			}
+		</style>
+		<!-- LOADING -->
+		
+		<style>
+			.sidebar-widget.widget-tasks ul li:nth-child(6n+1):before,
+			.sidebar-widget.widget-tasks ul li:before,
+			.sidebar-widget.widget-tasks ul li:before{
+				border-color:transparent!important;
+			}
+		</style>
 
 	</head>
 	<body>
@@ -406,11 +442,15 @@
 			
 										<ul class="simple-card-list mb-xlg">
 											<li class="primary">
-												<h3>488</h3>
+												<h3 id="display_mydaunlembar_nav">
+													<img src="../MEDIA/loading.gif" class="img-responsive" style="max-height:50px;margin:0 auto;" />
+												</h3>
 												<p>My Daun (Lembar)</p>
 											</li>
 											<li class="primary">
-												<h3>189.000</h3>
+												<h3 id="display_mypoin_nav">
+													<img src="../MEDIA/loading.gif" class="img-responsive" style="max-height:50px;margin:0 auto;" />
+												</h3>
 												<p>My Poin</p>
 											</li>
 										</ul>
@@ -460,6 +500,33 @@
 							<a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
 						</div>
 					</header>
+					
+					<div class="row">
+						<div class="col-lg-12">
+							<section class="panel">
+								<header class="panel-heading">
+									<h2 class="panel-title">Periode Mutasi</h2>
+								</header>
+								<div class="panel-body">
+									<form class="form-horizontal form-bordered" method="get">
+										<div class="form-group">
+											<label class="col-md-3 control-label" for="inputDefault">Tanggal Awal</label>
+											<div class="col-md-6">
+												<input type="date" class="form-control" placeholder="Masukan Kode Tujuan" id="input_tanggalawal" onchange="loadDataMutasi()">
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-3 control-label" for="inputDefault">Tanggal Akhir</label>
+											<div class="col-md-6">
+												<input type="date" class="form-control" id="input_tanggalakhir" onchange="loadDataMutasi()">
+											</div>
+										</div>
+									</form>
+								</div>
+							</section>
+					
+						</div>
+					</div>
 
 					<!-- start: page -->
 					<div class="timeline">
@@ -467,132 +534,11 @@
 							<div class="tm-title">
 								<h3 class="h5 text-uppercase">Semua Mutasi</h3>
 							</div>
-							<ol class="tm-items">
-								<li>
-									<div class="tm-info">
-										<div class="tm-icon"><i class="fa fa-star"></i></div>
-										<time class="tm-datetime" datetime="2016-11-22 19:13">
-											<div class="tm-datetime-date">2018-12-30</div>
-											<div class="tm-datetime-time">07:13 PM</div>
-									</time>
-									</div>
-									<div class="tm-box appear-animation" data-appear-animation="fadeInRight"data-appear-animation-delay="100">
-										<p>
-											Saldo akhir 62.217<br/>
-											Menerima Transfer 0
-										</p>
-										<p>
-											Keterangan<br/>
-											Komisi Pembayaran Merchant
-										</p>
-										<p>
-											Pembelian: Test Bayar
-										</p>
-										<div class="tm-meta">
-											<span>
-												<i class="fa fa-user"></i> Test Nama Merchant
-											</span>
-											<span>
-												<i class="fa fa-tag"></i> MC0000
-											</span>
-										</div>
-									</div>
-								</li>
+							<div id="display_content2">
 								
-								<li>
-									<div class="tm-info">
-										<div class="tm-icon"><i class="fa fa-star"></i></div>
-										<time class="tm-datetime" datetime="2016-11-22 19:13">
-											<div class="tm-datetime-date">2018-12-30</div>
-											<div class="tm-datetime-time">07:13 PM</div>
-									</time>
-									</div>
-									<div class="tm-box appear-animation" data-appear-animation="fadeInRight"data-appear-animation-delay="100">
-										<p>
-											Saldo akhir 62.217<br/>
-											Menerima Transfer 0
-										</p>
-										<p>
-											Keterangan<br/>
-											Komisi Pembayaran Merchant
-										</p>
-										<p>
-											Pembelian: Test Bayar
-										</p>
-										<div class="tm-meta">
-											<span>
-												<i class="fa fa-user"></i> Test Nama Merchant
-											</span>
-											<span>
-												<i class="fa fa-tag"></i> MC0000
-											</span>
-										</div>
-									</div>
-								</li>
+								<img src="../MEDIA/loading.gif" class="img-responsive" style="max-width:50%;margin:0 auto;" />
 								
-								<li>
-									<div class="tm-info">
-										<div class="tm-icon"><i class="fa fa-star"></i></div>
-										<time class="tm-datetime" datetime="2016-11-22 19:13">
-											<div class="tm-datetime-date">2018-12-30</div>
-											<div class="tm-datetime-time">07:13 PM</div>
-									</time>
-									</div>
-									<div class="tm-box appear-animation" data-appear-animation="fadeInRight"data-appear-animation-delay="100">
-										<p>
-											Saldo akhir 62.217<br/>
-											Menerima Transfer 0
-										</p>
-										<p>
-											Keterangan<br/>
-											Komisi Pembayaran Merchant
-										</p>
-										<p>
-											Pembelian: Test Bayar
-										</p>
-										<div class="tm-meta">
-											<span>
-												<i class="fa fa-user"></i> Test Nama Merchant
-											</span>
-											<span>
-												<i class="fa fa-tag"></i> MC0000
-											</span>
-										</div>
-									</div>
-								</li>
-								
-								<li>
-									<div class="tm-info">
-										<div class="tm-icon"><i class="fa fa-star"></i></div>
-										<time class="tm-datetime" datetime="2016-11-22 19:13">
-											<div class="tm-datetime-date">2018-12-30</div>
-											<div class="tm-datetime-time">07:13 PM</div>
-									</time>
-									</div>
-									<div class="tm-box appear-animation" data-appear-animation="fadeInRight"data-appear-animation-delay="100">
-										<p>
-											Saldo akhir 62.217<br/>
-											Menerima Transfer 0
-										</p>
-										<p>
-											Keterangan<br/>
-											Komisi Pembayaran Merchant
-										</p>
-										<p>
-											Pembelian: Test Bayar
-										</p>
-										<div class="tm-meta">
-											<span>
-												<i class="fa fa-user"></i> Test Nama Merchant
-											</span>
-											<span>
-												<i class="fa fa-tag"></i> MC0000
-											</span>
-										</div>
-									</div>
-								</li>
-
-							</ol>
+							</div>
 							
 						</div>
 					</div>
@@ -695,7 +641,81 @@
 		<!-- Examples -->
 		<script src="../LIBRARY/assets/javascripts/pages/examples.timeline.js"></script>
 		
-		<script type="text/javascript" src="../cordova.js"></script>
+		<script>
+		
+			loadGeneralInfo();
+			function loadGeneralInfo(){
+				
+				idDaun = localStorage.getItem('mydaun_member_idDaun');
+				
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						
+						var jsonData = JSON.parse(this.responseText);
+						var function_result = jsonData.function_result;
+						mydaunlembar = jsonData.saldo;
+						mypoin = jsonData.point;
+		
+						if( function_result == 0 ){
+							alert('Terjadi kesalahan teknis. Silahkan refresh page ini.');
+						} else if( function_result == 1 ){
+							
+							document.getElementById('display_mydaunlembar_nav').innerHTML = mydaunlembar;
+							document.getElementById('display_mypoin_nav').innerHTML = mypoin;
+							
+						}
+					}
+				};
+				xhttp.open("POST", "http://localhost/development_site/mydaun/daun/MOBILE_API/member/general.php?action=GetCurrentAccount", true);
+				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				xhttp.send("idDaun="+idDaun);
+				
+			}
+			
+			function loadDataMutasi(){
+				
+				idDaun = localStorage.getItem('mydaun_member_idDaun');
+				tanggalawal = document.getElementById('input_tanggalawal').value;
+				tanggalakhir = document.getElementById('input_tanggalakhir').value; 
+				
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						
+						var jsonData = JSON.parse(this.responseText);
+						var function_result = jsonData.function_result;
+						display_content2 = jsonData.display_content2;
+		
+						if( tanggalawal != '' && tanggalakhir != '' ){
+							document.getElementById('display_content2').innerHTML = display_content2;	
+						}
+		
+					}
+				};
+				xhttp.open("POST", "http://localhost/development_site/mydaun/daun/MOBILE_API/member/history/mutasi.php?action=GetAllHistoryByUserID", true);
+				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				xhttp.send("idDaun="+idDaun+"&datePick="+tanggalawal+"&datePick2="+tanggalakhir);
+				
+			}
+			
+			function logout(){	
+				localStorage.clear();
+				window.location="../index.html";
+			}
+			
+			function openModal(){
+			  	document.getElementById("modal").style.display="block";
+			}
+
+			function closeModal(){
+			  	document.getElementById("modal").style.display="none";
+			}
+		
+		</script>
+		
+		<div id="modal" class="modal"><!-- Place at bottom of page --></div>
+        <script type="text/javascript" src="../cordova.js"></script>
         <script type="text/javascript" src="../js/index.js"></script>
 	</body>
 </html>
